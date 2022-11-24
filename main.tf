@@ -1,78 +1,94 @@
-resource "aws_db_instance" "generic_db-cad0cf17" {
-  provider = aws.us-east-1
-
-
-  tags = {
-    env      = "test"
-    archUUID = "161fb507-6ac7-44a5-bc6b-e14340e93f71"
-  }
+resource "aws_vpc" "vpc" {
+  tags       = merge(var.tags, {})
+  cidr_block = var.vpc_cidr
 }
 
-resource "aws_ebs_snapshot" "aws_ebs_snapshot-429fe82c" {
-  provider = aws.eu-central-1
+resource "aws_autoscaling_group" "asg" {
+  min_size             = var.min_capacity
+  max_size             = var.max_capacity
+  launch_configuration = aws_launch_configuration.pCluster_lc.name
 
+  availability_zones = [
+    "us-west-1a",
+    "us-west-1b",
+  ]
 }
 
-resource "aws_instance" "m5a-a2168b32" {
-  provider = aws.eu-central-1
+resource "aws_instance" "c5_c_c_1_c" {
+  tags              = merge(var.tags, {})
+  instance_type     = "c5.large"
+  availability_zone = "us-west-1a"
+  ami               = var.ami
 
-  availability_zone = "eu-central-1b"
+  security_groups = [
+    aws_security_group.security_group.id,
+  ]
 }
 
-resource "aws_iam_group" "aws_iam_group-b53c8b10" {
-  provider = aws.eu-central-1
+resource "aws_instance" "c5" {
+  tags              = merge(var.tags, {})
+  instance_type     = "c5.large"
+  availability_zone = "us-west-1a"
+  ami               = var.ami
 
-
-  tags = {
-    env      = "test"
-    archUUID = "161fb507-6ac7-44a5-bc6b-e14340e93f71"
-  }
+  security_groups = [
+    aws_security_group.security_group.id,
+  ]
 }
 
-resource "aws_db_instance" "db_on_ec2-2d659735" {
-  provider = aws.eu-central-1
+resource "aws_instance" "c5_c_c_c_c_1_c" {
+  tags              = merge(var.tags, {})
+  instance_type     = "c5.large"
+  availability_zone = "us-west-1a"
+  ami               = var.ami
 
-  availability_zone = "eu-central-1b"
+  security_groups = [
+    aws_security_group.security_group.id,
+    aws_security_group.security_group.id,
+  ]
 }
 
-resource "aws_instance" "m5a-3de139ab" {
-  provider = aws.eu-central-1
+resource "aws_instance" "c5_c_c" {
+  tags              = merge(var.tags, {})
+  instance_type     = "c5.large"
+  availability_zone = "us-west-1a"
+  ami               = var.ami
 
-  availability_zone = "eu-central-1a"
+  security_groups = [
+    aws_security_group.security_group.id,
+    aws_security_group.security_group.id,
+  ]
 }
 
-resource "aws_vpc" "aws_vpc-49215be0" {
-  provider = aws.us-east-1
+resource "aws_instance" "c5_c_c_2_c" {
+  tags              = merge(var.tags, {})
+  instance_type     = "c5.large"
+  availability_zone = "us-west-1a"
+  ami               = var.ami
 
+  security_groups = [
+    aws_security_group.security_group.id,
+  ]
 }
 
-resource "aws_ebs_volume" "aws_ebs_volume-d283b595" {
-  provider = aws.eu-central-1
+resource "aws_instance" "c5_c_c_c_c" {
+  tags              = merge(var.tags, {})
+  instance_type     = "c5.large"
+  availability_zone = "us-west-1a"
+  ami               = var.ami
 
-  encrypted         = true
-  availability_zone = "eu-central-1a"
-  size              = "120"
-  iops              = "90"
+  security_groups = [
+    aws_security_group.security_group.id,
+    aws_security_group.security_group.id,
+  ]
 }
 
-resource "aws_s3_bucket" "aws_s3_bucket-726a7d96" {
-  provider = aws.eu-central-1
+resource "aws_launch_configuration" "pCluster_lc" {
+  instance_type = "c5n.large"
+  image_id      = var.Official_Debian_AMi
 
+  security_groups = [
+    aws_security_group.security_group.id,
+  ]
 }
 
-resource "aws_db_instance" "db_on_ec2-f475519a" {
-  provider = aws.us-east-1
-
-  availability_zone = "eu-central-1b"
-}
-
-resource "aws_vpc" "aws_vpc-13714393" {
-  provider = aws.eu-central-1
-
-}
-
-resource "aws_db_instance" "db_on_ec2-8d185e71" {
-  provider = aws.eu-central-1
-
-  availability_zone = "eu-central-1a"
-}
